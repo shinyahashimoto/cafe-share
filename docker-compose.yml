@@ -10,8 +10,27 @@ services:
     command: yarn serve
 
   server:
-    build: ./server
+    build: ./server/src
     ports:
       - 8888:8888
     volumes:
-      - ./server:/api
+      - ./server/src:/api
+    tty: true
+
+  # 設定はあとで編集
+  postgresql:
+    image: postgres:10.5
+    container_name: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - /usr/local/var/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Niko1004
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+      POSTGRES_DB: cafe-share
+      DATABASE_HOST: localhost
+    hostname: postgres
+    restart: always
+    user: postgres
